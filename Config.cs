@@ -19,6 +19,7 @@ namespace IdentityServerWithAspNetIdentity
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
             };
+
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
