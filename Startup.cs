@@ -68,7 +68,6 @@ namespace IdentityServerWithAspNetIdentity
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
