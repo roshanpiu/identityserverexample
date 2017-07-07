@@ -52,7 +52,7 @@ namespace IdentityServerWithAspNetIdentity
                 new Client
                 {
                     ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     ClientSecrets =
                     {
