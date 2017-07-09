@@ -2,13 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <ApplicationInsightsResourceId>/subscriptions/048e3270-d3de-4eff-86bc-7663ac7a567d/resourcegroups/Default/providers/microsoft.insights/components/identityserverexample</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/048e3270-d3de-4eff-86bc-7663ac7a567d/resourcegroups/Default/providers/microsoft.insights/components/identityserverexample</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\PublishProfiles\identityserversample - Web Deploy.pubxml" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.1" />
@@ -55,14 +49,6 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
