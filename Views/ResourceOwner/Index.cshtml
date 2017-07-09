@@ -1,0 +1,169 @@
+﻿@{
+    Layout = null;
+}
+
+@using Microsoft.Extensions.Options;
+@using IdentityServerWithAspNetIdentity.Services;
+
+@inject IOptions<IdentityServerConfiguration> IdentityServerConfiguration
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>JS-based resource owner sample</h1>
+    <div>
+        <label>username</label>
+        <input id="username" value="roshanpiu@gmail.com" />
+    </div>
+    <div>
+        <label>password</label>
+        <input id="password" value="Mitrai@123" />
+    </div>
+    <div>
+        <button id="button">Get Token</button>
+        <br />
+        <button id="refreshToken">Get Access token using refresh token</button>
+    </div>
+    <script>
+        var baseUrl = "@IdentityServerConfiguration.Value.IdentityServerUri" +"/connect/";
+        var tokenUrl = baseUrl + "token";
+        var revokeUrl = baseUrl + "revocation";
+
+        var client_id = "ro.client";
+        var client_secret = "secret";
+
+        var accessToken = "";
+        var refreshToken = "";
+
+        document.getElementById("button").addEventListener("click", getToken, false);
+        document.getElementById("refreshToken").addEventListener("click", getTokenUsingRefreshToken, false);
+
+        function getToken() {
+            var uid = document.getElementById("username").value;
+            var pwd = document.getElementById("password").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function (e) {
+
+                console.log("========= Access token obtained using Username and password ===============");
+
+                console.log(xhr.status);
+                console.log(xhr.response);
+
+                var response_data = JSON.parse(xhr.response);
+                if (xhr.status === 200 && response_data.access_token) {
+
+                    accessToken = response_data.accessToken;
+                    refreshToken = response_data.refresh_token;
+
+                    console.log(parseJwt(response_data.access_token));
+                    console.log("exp_time", new Date(parseJwt(response_data.access_token).exp * 1000), "auth_time", new Date(parseJwt(response_data.access_token).auth_time * 1000));
+                    revokeToken(response_data.access_token);
+                }
+            }
+            xhr.open("POST", tokenUrl);
+            var data = {
+                username: uid,
+                password: pwd,
+                grant_type: "password",
+                scope: "offline_access api1",
+                client_id: client_id,
+                client_secret: client_secret
+            };
+            var body = "";
+            for (var key in data) {
+                if (body.length) {
+                    body += "&";
+                }
+                body += key + "=";
+                body += encodeURIComponent(data[key]);
+            }
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(client_id + ":" + client_secret));
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(body);
+        }
+
+        function revokeToken(token) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function (e) {
+                console.log(xhr.status);
+                console.log(xhr.response);
+            }
+            xhr.open("POST", revokeUrl);
+            var data = {
+                token: token,
+                //token_type_hint:"access_token",
+                //client_id: client_id,
+                //client_secret:client_secret
+            };
+            var body = "";
+            for (var key in data) {
+                if (body.length) {
+                    body += "&";
+                }
+                body += key + "=";
+                body += encodeURIComponent(data[key]);
+            }
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(client_id + ":" + client_secret));
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(body);
+        }
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            return JSON.parse(window.atob(base64));
+        }
+
+        function getTokenUsingRefreshToken() {
+            if (!refreshToken) {
+                alert("Get access token using un and pw");
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function (e) {
+
+                console.log("========= Access token obtained using refresh token ===============");
+
+                console.log(xhr.status);
+                console.log(xhr.response);
+
+                var response_data = JSON.parse(xhr.response);
+                if (xhr.status === 200 && response_data.access_token) {
+
+                    accessToken = response_data.accessToken;
+                    refreshToken = response_data.refresh_token;
+                    console.log(parseJwt(response_data.access_token));
+                    console.log("exp_time", new Date(parseJwt(response_data.access_token).exp * 1000), "auth_time", new Date(parseJwt(response_data.access_token).auth_time * 1000));
+                    revokeToken(response_data.access_token);
+                }
+            }
+            xhr.open("POST", tokenUrl);
+            var data = {
+                grant_type: "refresh_token",
+                scope: "offline_access api1",
+                client_id: client_id,
+                client_secret: client_secret,
+                refresh_token: refreshToken
+            };
+            var body = "";
+            for (var key in data) {
+                if (body.length) {
+                    body += "&";
+                }
+                body += key + "=";
+                body += encodeURIComponent(data[key]);
+            }
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(client_id + ":" + client_secret));
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(body);
+        }
+    </script>
+</body>
+</html>
+

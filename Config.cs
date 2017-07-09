@@ -4,6 +4,7 @@
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Security.Claims;
 
@@ -31,7 +32,7 @@ namespace IdentityServerWithAspNetIdentity
         }
 
         // clients want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<Client> GetClients(IConfigurationRoot Configuration)
         {
             // client credentials client
             return new List<Client>
@@ -60,7 +61,7 @@ namespace IdentityServerWithAspNetIdentity
                     },
                     AllowedScopes = { "api1", IdentityServerConstants.StandardScopes.OfflineAccess },
                     AllowOfflineAccess = true,
-                    AllowedCorsOrigins = { "http://localhost:5006" }
+                    AllowedCorsOrigins = { Configuration["IdentityServerConfig:ResourceOwnerJsClientUri"] }
                 },
 
                 // OpenID Connect hybrid flow and client credentials client (MVC)
@@ -77,8 +78,8 @@ namespace IdentityServerWithAspNetIdentity
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+                    RedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signin-oidc"},
+                    PostLogoutRedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
@@ -100,9 +101,9 @@ namespace IdentityServerWithAspNetIdentity
 
                     RequireConsent = false,
 
-                    RedirectUris = { "http://localhost:5003/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5003" },
+                    RedirectUris = { $"{Configuration["IdentityServerConfig:ImplicitJsClientUri"]}/callback" },
+                    PostLogoutRedirectUris = { $"{Configuration["IdentityServerConfig:ImplicitJsClientUri"]}" },
+                    AllowedCorsOrigins = { Configuration["IdentityServerConfig:ImplicitJsClientUri"] },
 
                     AllowedScopes =
                     {
@@ -121,9 +122,9 @@ namespace IdentityServerWithAspNetIdentity
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { "http://localhost:5005/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5005" },
-                    AllowedCorsOrigins = { "http://localhost:5005" },
+                    RedirectUris = { $"{Configuration["IdentityServerConfig:ImplicitReactClientUri"]}/callback.html" },
+                    PostLogoutRedirectUris = { Configuration["IdentityServerConfig:ImplicitReactClientUri"] },
+                    AllowedCorsOrigins = { Configuration["IdentityServerConfig:ImplicitReactClientUri"] },
 
                     AllowedScopes =
                     {

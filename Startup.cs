@@ -48,12 +48,14 @@ namespace IdentityServerWithAspNetIdentity
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
+            services.Configure<IdentityServerConfiguration>(Configuration.GetSection("IdentityServerConfig"));
+
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryClients(Config.GetClients(Configuration))
                 .AddAspNetIdentity<ApplicationUser>();
 
         }
@@ -68,22 +70,29 @@ namespace IdentityServerWithAspNetIdentity
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.Map("/api", apiApp =>
+            {
+                apiApp.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+                {
+                    Authority = Configuration["IdentityServerConfig:IdentityServerUri"],
+                    RequireHttpsMetadata = false,
+                    ApiName = "api1",
+                });
 
+                apiApp.UseMvc();
+            });
+
+            app.UseStaticFiles();
             app.UseIdentity();
             app.UseIdentityServer();
 
-            CreateAdminUser(app.ApplicationServices.GetService<IServiceProvider>()).Wait();
-
-
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseGoogleAuthentication(new GoogleOptions
             {
                 AuthenticationScheme = "Google",
@@ -98,6 +107,8 @@ namespace IdentityServerWithAspNetIdentity
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateAdminUser(app.ApplicationServices.GetService<IServiceProvider>()).Wait();
         }
 
         private async Task CreateAdminUser(IServiceProvider serviceProvider)
