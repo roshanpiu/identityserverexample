@@ -49,6 +49,13 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Properties\PublishProfiles\identityserverexample - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\identityserversample - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>
