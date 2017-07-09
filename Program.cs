@@ -14,6 +14,8 @@ namespace IdentityServerWithAspNetIdentity
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
+                .CaptureStartupErrors(true)
+                .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .Build();
 
