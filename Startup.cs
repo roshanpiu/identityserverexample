@@ -97,8 +97,8 @@ namespace IdentityServerWithAspNetIdentity
             {
                 AuthenticationScheme = "Google",
                 SignInScheme = "Identity.External", // this is the name of the cookie middleware registered by UseIdentity()
-                ClientId = "998042782978-s07498t8i8jas7npj4crve1skpromf37.apps.googleusercontent.com",
-                ClientSecret = "HsnwJri_53zn7VcO1Fm7THBb",
+                ClientId = "786184737816-un41vi10nou3qpjm0ai2n6obt9v8sckc.apps.googleusercontent.com",
+                ClientSecret = "5w0HtcFRbC31HZTfBASoV63J",
             });
 
             app.UseMvc(routes =>
