@@ -101,6 +101,16 @@ namespace IdentityServerWithAspNetIdentity
                 ClientSecret = "5w0HtcFRbC31HZTfBASoV63J",
             });
 
+            app.UseFacebookAuthentication(new FacebookOptions
+            {
+                AppId = "115097949119920",
+                AppSecret = "d55be01a3792417d54256efca70ec994",
+                SignInScheme = "Identity.External",
+                Scope = { "email" },
+                Fields = { "name", "email" },
+                SaveTokens = true,
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
