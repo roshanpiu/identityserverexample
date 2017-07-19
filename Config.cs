@@ -88,7 +88,7 @@ namespace IdentityServerWithAspNetIdentity
                         "api1"
                     },
                     AllowOfflineAccess = true,
-
+                    AllowedCorsOrigins = { "AllowAll" }
                 },
 
                 // JavaScript Client
