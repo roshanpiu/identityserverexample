@@ -78,9 +78,10 @@ namespace IdentityServerWithAspNetIdentity
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signin-oidc"},
-                    PostLogoutRedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signout-callback-oidc" },
-
+                    //RedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signin-oidc"},
+                    RedirectUris = { "http://identityserverexample.azurewebsites.net/mobilecallback" },
+                    PostLogoutRedirectUris = { "http://identityserverexample.azurewebsites.net" },
+                    
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
