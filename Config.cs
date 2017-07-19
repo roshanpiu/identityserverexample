@@ -79,17 +79,18 @@ namespace IdentityServerWithAspNetIdentity
                     },
 
                     //RedirectUris = { $"{Configuration["IdentityServerConfig:HybridMvcClientUri"]}/signin-oidc"},
-                    RedirectUris = { "http://identityserverexample.azurewebsites.net/mobilecallback" },
+                    RedirectUris = { "http://localhost/IdentityServer" },
                     PostLogoutRedirectUris = { "http://identityserverexample.azurewebsites.net" },
                     
                     AllowedScopes =
+
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "api1"
                     },
                     AllowOfflineAccess = true,
-                    AllowedCorsOrigins = { "http://identityserverexample.azurewebsites.net" }
+                    AllowedCorsOrigins = { "http://identityserverexample.azurewebsites.net", "http://localhost" }
                 },
 
                 // JavaScript Client

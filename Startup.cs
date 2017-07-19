@@ -11,6 +11,7 @@ using IdentityServerWithAspNetIdentity.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System;
+using IdentityServerWithAspNetIdentity.Middleware;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -87,6 +88,11 @@ namespace IdentityServerWithAspNetIdentity
                 });
 
                 apiApp.UseMvc();
+            });
+
+            app.UseRequestTimer(new RequestTimerOptions
+            {
+                Format = (context, elapsed) => $"Request {context.Request.Method} {context.Request.Path} took {elapsed} ms"
             });
 
             app.UseStaticFiles();
