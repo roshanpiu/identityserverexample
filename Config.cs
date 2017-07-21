@@ -69,7 +69,7 @@ namespace IdentityServerWithAspNetIdentity
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes =  GrantTypes.HybridAndClientCredentials,
+                    AllowedGrantTypes =  GrantTypes.CodeAndClientCredentials,
 
                     RequireConsent = false,
 
