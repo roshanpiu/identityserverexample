@@ -134,6 +134,25 @@ namespace IdentityServerWithAspNetIdentity
                         IdentityServerConstants.StandardScopes.Profile,
                         "api1"
                     },
+                },
+
+                // React Native Client
+                new Client
+                {
+                    ClientId = "foo",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowOfflineAccess = true,
+
+                    RedirectUris = { "http://localhost:3002/callback" },
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api1"
+                    },
                 }
             };
         }
