@@ -5,6 +5,7 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <NameOfLastUsedPublishProfile>identityserverexample - Web Deploy</NameOfLastUsedPublishProfile>
     <ActiveDebugProfile>IdentityServerWithAspNetIdentity</ActiveDebugProfile>
+    <ToolsVersionPromptShown>0.0</ToolsVersionPromptShown>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

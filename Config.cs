@@ -139,20 +139,18 @@ namespace IdentityServerWithAspNetIdentity
                 // React Native Client
                 new Client
                 {
-                    ClientId = "foo",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowOfflineAccess = true,
+                    ClientId = "native.code",
+                    ClientName = "Native Client (Code with PKCE)",
 
-                    RedirectUris = { "http://localhost:3002/callback" },
-                    AllowAccessTokensViaBrowser = true,
-                    RequireConsent = false,
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        "api1"
-                    },
+                    RedirectUris = { "https://notused" },
+                    PostLogoutRedirectUris = { "https://notused" },
+
+                    RequireClientSecret = false,
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    AllowedScopes = { "openid", "profile", "email", "api1" },
+                    AllowOfflineAccess = true
                 }
             };
         }
